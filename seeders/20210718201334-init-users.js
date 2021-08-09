@@ -282,6 +282,16 @@ module.exports = {
     //     board_state: 1,
     //   }
     // ]);
+    //----OK-------------------------------------------board
+    await queryInterface.bulkInsert("board", [
+      {
+        note_id: 2,
+        board_usename: "小洪",
+        board_content:
+          "這是小洪測試這是小洪測試這是小洪測試這是小洪測試這是小洪測試這是小洪測試這是小洪測試",
+        board_state: 1,
+      },
+    ]);
     //----OK-------------------------------------------collect_product
     // await queryInterface.bulkInsert("collect_product", [
     //   {

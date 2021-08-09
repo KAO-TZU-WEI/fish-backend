@@ -63,7 +63,7 @@ module.exports = (sequelize) => {
     state: {
       type: DataTypes.INTEGER(1),
       allowNull: false,
-      defaultValue: null,
+      defaultValue: "1",
       primaryKey: false,
       autoIncrement: false,
       comment: null,
@@ -75,12 +75,12 @@ module.exports = (sequelize) => {
     comment: "",
     timestamps: false,
     indexes: [
-      {
-        name: "board_id",
-        unique: false,
-        type: "BTREE",
-        fields: ["board_id"],
-      },
+      // {
+      //   name: "board_id",
+      //   unique: false,
+      //   type: "BTREE",
+      //   fields: ["board_id"],
+      // },
       {
         name: "member_id",
         unique: false,
