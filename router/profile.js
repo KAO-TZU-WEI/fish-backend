@@ -9,7 +9,7 @@ const Promise = require("bluebird");
 const bcrypt = Promise.promisifyAll(require("bcrypt"));
 // mailgun
 const mailgun = require("mailgun-js");
-
+const key = require("../config/email-secret");
 //連MySQL區
 const Members = db.membersModel;
 const Notes = db.noteModel;
@@ -107,9 +107,9 @@ router.patch(
     res.send("put /profile");
 
     //有變更資料寄信通知
-    const DOMAIN = "sandbox652ca7e9c24a4f8f9b63f67423460ab9.mailgun.org";
+    const DOMAIN = key.emailKey;
     const mg = mailgun({
-      apiKey: "991e4f95df850f2d12d1a116c556129a-a0cfb957-72f364db",
+      apiKey: key.apiKey,
       domain: DOMAIN,
     });
     const mailgunMail = {
@@ -121,7 +121,7 @@ router.patch(
     mg.messages().send(mailgunMail, function (error, info) {
       // console.log(info);
       if (error) {
-        console.log("失敗Error: " + err);
+        console.log("失敗Error: " + error);
       } else {
         console.log("寄成功Response: " + info);
       }
@@ -293,13 +293,16 @@ router.post("/loveProducts/:productId", auth, async (req, res) => {
   const addLike = {
     member_id: req.member.id,
     product_id: req.params.productId,
-  }
+  };
   try {
-    const loveProduct = await MemberLikeProducts.findOrCreate({ where: {
-      product_id: req.params.productId
-     }, defaults: addLike});
+    const loveProduct = await MemberLikeProducts.findOrCreate({
+      where: {
+        product_id: req.params.productId,
+      },
+      defaults: addLike,
+    });
     res.status(201).json({
-      message: '恭喜添加成功'
+      message: "恭喜添加成功",
     });
   } catch (err) {
     console.log(err);
