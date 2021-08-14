@@ -6,7 +6,8 @@ const ActivityInfo = db.activityInfoModel;
 const ActivityOrder = db.activityOrderModel;
 const ActivityNode = db.noteModel;
 const mailgun = require("mailgun-js");
-//
+const key = require("../config/email-secret");
+//取得活動產品細節顯示在日曆
 router.get("/", async (req, res) => {
   const ret = await ActivityInfo.findAll();
   res.status(200).json({
@@ -16,24 +17,24 @@ router.get("/", async (req, res) => {
 //送出訂單
 router.post("/order", async (req, res) => {
   try {
-    // const DOMAIN = "";
-    // const mg = mailgun({
-    //   apiKey: "",
-    //   domain: DOMAIN,
-    // });
-    // const mailgunMail = {
-    //   from: "跳躍吧!漁會@example.com",
-    //   to: "sunvicky11@gmail.com",
-    //   subject: "跳躍吧!漁會活動報名成功",
-    //   text: "恭喜你成功完成跳躍吧!漁會的活動報名!!",
-    // };
-    // mg.messages().send(mailgunMail, function (error, info) {
-    //   if (error) {
-    //     console.log("失敗Error: " + err);
-    //   } else {
-    //     console.log("寄成功Response: " + info);
-    //   }
-    // });
+    const DOMAIN = key.emailKey;
+    const mg = mailgun({
+      apiKey: key.apiKey,
+      domain: DOMAIN,
+    });
+    const mailgunMail = {
+      from: "跳躍吧!漁會@example.com",
+      to: "alex3889660@gmail.com",
+      subject: "跳躍吧!漁會活動報名成功",
+      text: "恭喜你成功完成跳躍吧!漁會的活動報名!!",
+    };
+    mg.messages().send(mailgunMail, function (error, info) {
+      if (error) {
+        console.log("失敗Error: " + err);
+      } else {
+        console.log("寄成功Response: " + info);
+      }
+    });
     const signUp = await ActivityOrder.bulkCreate(req.body);
     return res.status(201).json({
       message: "活動報名成功",
