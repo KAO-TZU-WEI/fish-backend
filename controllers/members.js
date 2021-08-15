@@ -103,7 +103,7 @@ exports.postRegister = async (req, res, next) => {
                 return;
             }
             //加密
-            req.body.member.password = await bcrypt.hashAsync(password, 10);
+         req.body.member.password = await bcrypt.hashAsync(password, 10);
             //step 2.
             //save members table
             const saveMember = await Members.create(req.body.member);
